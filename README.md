@@ -10,10 +10,13 @@ Simple web app to read and write data to MySQL
 
 Simple Web Application V1 creates below Kubernetes configuration
 
-
-| Namespace | webapp |
 | --------- | -------|
+| Namespace | webapp |
 | Secret | dbsecret |
 | Replicaset | selector - webapp |
 | Service | Nodeport - 30327 |
 
+Installation
+```
+kubectl apply -f simple-webapp.yaml
+```
