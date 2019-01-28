@@ -12,6 +12,7 @@ Simple Web Application V1 creates below Kubernetes configuration
 
 
 | Namespace | webapp |
+| --------- | -------|
 | Secret | dbsecret |
 | Replicaset | selector - webapp |
 | Service | Nodeport - 30327 |
