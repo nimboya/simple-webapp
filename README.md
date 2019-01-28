@@ -10,7 +10,8 @@ Simple web app to read and write data to MySQL
 
 Simple Web Application V1 creates below Kubernetes configuration
 
-| --------- | -------|
+| Configuration | Default |
+| ------------- | ------- |
 | Namespace | webapp |
 | Secret | dbsecret |
 | Replicaset | selector - webapp |
