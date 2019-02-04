@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: webapp-v2
+---
+apiVersion: apps/v1beta2
+kind: ReplicaSet
+metadata:
+  name: simple-webapp-frontend
+  namespace: webapp-v2
+spec:
+  replicas: 1
+  selector:
+    matchExpressions:
+      - {key: app, operator: In, values: [webapp-fe-v2]}
+  template:
+    metadata:
+      labels:
+        app: webapp-fe-v2
+    spec:
+      containers:
+        - image: sharma17393/simple-webapp:v2
+          name: webfrontend
+          env:
+            - name:  MYSQL_HOST
+              value:  dbbackend
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_DATABASE
+              value: employees
+            - name: VAULT_ADDR
+              value: "http://vault-vault.kind:8200"
+            - name: VAULT_TOKEN
+              valueFrom:
+                  secretKeyRef:
+                    name: vault-token
+                    key: vaultToken              
+---
+apiVersion: apps/v1beta2
+kind: ReplicaSet
+metadata:
+  name: simple-webapp-dbbackend
+  namespace: webapp-v2
+spec:
+  replicas: 1
+  selector:
+    matchExpressions:
+      - {key: app, operator: In, values: [webapp-be-v2]}
+  template:
+    metadata:
+      labels:
+        app: webapp-be-v2
+    spec:
+      containers:
+        - image: genschsa/mysql-employees:latest
+          name: dbbackend
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                  secretKeyRef:
+                    name: mysql-pass
+                    key: mysqlPass   
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-webapp
+  namespace: webapp-v2
+spec:
+  selector:
+    app: webapp-fe-v2
+  type: NodePort
+  ports:
+  - name:  http
+    port:  8081
+    nodePort: 30328
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbbackend
+  namespace: webapp-v2
+spec:
+  selector:
+    app: webapp-be-v2
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306
