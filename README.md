@@ -33,7 +33,7 @@ kubectl apply -f simple-webapp.yaml
 For exact instructions, please visit below URL 
 
 ```
-https://medium.com/devopslinks/delivering-secrets-management-for-database-connectivity-with-vault-part-1-1f1ca2dbfd8c
+https://medium.com/devopslinks/delivering-secrets-management-for-database-connectivity-with-vault-part-2-b8dfd782b9b1
 ```
 
 Simple Web Application V2 creates below Kubernetes configuration 
